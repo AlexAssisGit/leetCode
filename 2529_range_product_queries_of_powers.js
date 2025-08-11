@@ -2,20 +2,25 @@ const MOD = 1_000_000_007;
 
 var productQueries = function(n, queries) {
     
-    let powers = [];
-    let restante = n;
-    let potencia = 0;
-
-    while(restante > 0)
-    {
-        if((restante & 1) === 1) {
-            powers.push(2 ** potencia);
+    function calcPotencias(restante){
+    // calcular vetor de potencias
+        let potencia = 0;
+        let powers = [];
+        
+        while(restante > 0)
+        {
+            if((restante & 1) === 1) // Comparação bit a bit
+            { 
+                powers.push(2 ** potencia);
+            }
+            restante = restante >> 1; // avança um bit
+            potencia++;
         }
-        restante = restante >> 1;
-        potencia++;
+        return powers;
     }
 
     function calcularResposta(queries, powers){
+        // funcao indentada para calcular vetor de respostas
         return queries.map(([a, b], indice) => {
             if (a === b){
                 return powers[a] % MOD; 
@@ -25,6 +30,6 @@ var productQueries = function(n, queries) {
             }
         });
     }
-
+    powers = calcPotencias(n);
     return calcularResposta(queries, powers);
 };
